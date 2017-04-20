@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>表单验证</title>
+	<style type="text/css">
+		form{
+			margin: 100px auto;
+			width: 450px;
+			background-color: #f0f0f0;
+			padding: 20px;
+			
+		}
+		span{
+			margin-left: 20px;
+		}
+		div{
+			margin-left: 104px;
+			margin-top: 8px;
+			font-size: 12px;
+			color: #a8a8a8;
+		}
+		.username,.pwd,.pwd2,.email,.phone{
+			margin:30px 0 0 20px;
+			width: 300px;
+			height: 22px;
+			border-radius: 6px;
+		}
+		.btn{
+			width: 60px;
+			height: 28px;
+			text-align: center;
+			color: white;
+			background-color: #48cedc;
+			border-radius: 8px;
+			border:0;
+			margin-left: 349px;
+			margin-top:  22px;
+		}
+		.sta{
+			color:#5abb48;  /*绿色*/
+		}
+		.sta2{
+			color: #e20018;  /*红色*/
+		}
+		.sta3{
+			color: #a8a8a8;
+		}
+	</style>
+	
+</head>
+<body>
+	<form action="a.jsp" method="post" id="sub">
+		<label><span>用户名&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="text" name="username" class="username" id="info"></label>
+		<div id="userWarn"></div>
+		<label><span>密码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="password" name="pwd" class="pwd" id="pwd"></label>
+		<div id="pwdWarn"></div>
+		<label><span>密码确认</span><input type="password" name="pwd2" class="pwd2" id="pwd2"></label>
+		<div id="pwd2Warn"></div>
+		<label><span>邮箱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input type="text" name="email" class="email" id="email"></label>
+		<div id="emailWarn"></div>
+		<label><span>手机号码</span><input type="text" name="phone" class="phone" id="phone"></label>
+		<div id="phoneWarn"></div>
+		<input type="submit" value="验证" class="btn"> 
+	</form>
+	<script type="text/javascript">
+			var arr = document.getElementsByTagName("input");
+			var userWarn = document.getElementById("userWarn");
+			var pwdWarn = document.getElementById("pwdWarn");
+			var pwd2Warn = document.getElementById("pwd2Warn");
+			var emailWarn = document.getElementById("emailWarn");
+			var phoneWarn = document.getElementById("phoneWarn");
+			var sub = document.getElementById("sub");
+			var userLength = 0;
+			function nameLength(str){
+				return str.replace(/[^\x00-xff]/g,"xx").length;    //如果有汉字知道长度是多少
+			}
+			//用户名
+			arr[0].onfocus = function(){
+				userWarn.style.display = "block";
+				userWarn.innerHTML = "必填，请输入4-16个字符！";
+				userWarn.className = "sta3";
+				arr[0].style.border = "1px solid #a8a8a8";
+			}
+			arr[0].onkeyup = function(){
+				userLength = nameLength(arr[0].value);
+			}
+			arr[0].onblur = function(){
+				//判断是否为空
+				if(userLength == 0)
+				{
+					userWarn.innerHTML = "用户名不能为空，请您输入用户名！";
+					userWarn.className = "sta2";
+					arr[0].style.border = "1px solid #e20018";
+					return false;
+				}
+				//判断字符串是否大于4个字符
+				else if(userLength < 4){
+					userWarn.innerHTML = "请至少输入4个字符！";
+					userWarn.className = "sta2";
+					arr[0].style.border = "1px solid #e20018";
+					return false;
+				}
+				else if(userLength > 16){
+					userWarn.innerHTML = "最多输入16个字符！";
+					userWarn.className = "sta2";
+					arr[0].style.border = "1px solid #e20018";
+					return false;
+				}
+				else{
+					userWarn.innerHTML = "恭喜您，验证通过！";
+					userWarn.className = "sta";
+					arr[0].style.border = "1px solid #5abb48";
+					return true;
+				}
+			}
+			//密码
+			arr[1].onfocus = function(){
+				pwdWarn.style.display = "block";
+				pwdWarn.innerHTML = "请输入8-25个字符的密码！";
+				pwdWarn.className = "sta3";
+				arr[1].style.border = "1px solid #a8a8a8";
+			}
+			arr[1].onkeyup = function(){
+				userLength = nameLength(this.value);
+			}
+			arr[1].onblur = function(){
+				//判断密码是否为空
+				if(arr[1].value == 0)
+				{
+					pwdWarn.innerHTML = "密码不能为空！";
+					pwdWarn.className = "sta2";
+					arr[1].style.border = "1px solid #e20018";
+					return false;
+				}
+				//判断字符串是否大于4个字符
+				else if(arr[1].value.length < 8){
+					pwdWarn.innerHTML = "请至少输入8个字符！";
+					pwdWarn.className = "sta2";
+					arr[1].style.border = "1px solid #e20018";
+					return false;
+				}
+				else if(arr[1].value.length > 25){
+					pwdWarn.innerHTML = "最多输入25个字符！";
+					pwdWarn.className = "sta2";
+					arr[1].style.border = "1px solid #e20018";
+					return false;
+				}
+				else{
+					pwdWarn.innerHTML = "密码可用！";
+					pwdWarn.className = "sta";
+					arr[1].style.border = "1px solid #5abb48";
+					return true;
+				}
+			}
+			//密码确认
+			arr[2].onfocus = function(){
+				pwd2Warn.innerHTML  = "再次输入相同的密码";
+				arr[2].style.border = "1px solid #a8a8a8";
+			}
+			arr[2].onblur = function(){
+				if(arr[2].value != arr[1].value){
+					pwd2Warn.innerHTML = "两次输入的密码不一致，请重新输入！";
+					pwd2Warn.className = "sta2";
+					arr[2].style.border = "1px solid #e20018";
+					return false;
+				}
+				else{
+					pwd2Warn.innerHTML = "两次密码输入相同";
+					pwd2Warn.className = "sta";
+					arr[2].style.border = "1px solid #5abb48";
+					return true;
+				}
+			}
+			//邮箱
+			var myEmail = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g;
+			arr[3].onfocus = function(){
+				emailWarn.innerHTML = "请输入邮箱";
+				emailWarn.className = "sta3";
+				arr[3].style.border = "1px solid #a8a8a8";
+			}
+			arr[3].onblur = function(){
+				if(myEmail.test(arr[3].value)){
+					emailWarn.innerHTML = "邮箱输入正确";
+					emailWarn.className = "sta";
+					arr[3].style.border = "1px solid #5abb48";
+					return true;
+				}
+				else{
+					emailWarn.innerHTML = "邮箱格式不正确！"
+					emailWarn.className = "sta2";
+					arr[3].style.border = "1px solid #e20018";
+					return false;
+				}
+			}
+			//手机号码
+			var myPhone = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/g;
+			arr[4].onfocus = function(){
+				phoneWarn.innerHTML = "请输入手机号码";
+				phoneWarn.className = "sta3";
+				arr[4].style.border = "1px solid #a8a8a8";
+			}
+			arr[4].onblur = function(){
+				if(myPhone.test(arr[4].value)){
+					phoneWarn.innerHTML = "手机号码正确";
+					phoneWarn.className = "sta";
+					arr[4].style.border = "1px solid #5abb48";
+					return true;
+				}
+				else{
+					phoneWarn.innerHTML = "手机号码输入不正确！"
+					phoneWarn.className = "sta2";
+					arr[4].style.border = "1px solid #e20018";
+					return false;
+				}
+			}
+
+	</script>
+</body>
+</html>
